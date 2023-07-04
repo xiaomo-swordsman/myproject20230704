@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+    <!--<typeAliases>
+        <typeAlias type="com.example.domain.User" alias="User"/>
+        <package name="com.example.domain"/>
+    </typeAliases>-->
+
+    <!-- 引入外部配置文件 -->
+    <properties resource="jdbc.properties"></properties>
+
+    <!-- 配置类型转换器 -->
+    <typeHandlers>
+        <typeHandler handler="com.xiaomo.handler.MyHandler"></typeHandler>
+    </typeHandlers>
+    <!-- 数据源环境 -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <!-- 配置mysql的数据源的四个基本信息-->
+                <property name="driver" value="${jdbc.driverClass}"/>
+                <property name="url" value="${jdbc.jdbcUrl}"/>
+                <property name="username" value="${jdbc.user}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!-- 加载映射环境 -->
+    <mappers>
+        <!-- 通过单独加载xml文件方式来实现映射 -->
+        <!--<mapper resource="mapper/UserMapper.xml"></mapper>-->
+
+        <!-- 通过接口和注解的方式来实现映射 -->
+        <!--<mapper class="com.xiaomo.mapper.UserMapper"></mapper>-->
+
+        <package name="com.xiaomo.mapper"/>
+    </mappers>
+
+
+</configuration>

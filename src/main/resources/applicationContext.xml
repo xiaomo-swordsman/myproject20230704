@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean id="user" class="com.xiaomo.domain.User">
+        <property name="name" value="小莫"></property>
+        <property name="id" value="1"></property>
+    </bean>
+
+    <!--<bean id="userService" class="com.xiaomo.service.UserServiceImpl"></bean>-->
+    <!--<bean id="userDao" class="com.xiaomo.dao.UserDaoImpl"></bean>-->
+
+    <context:component-scan base-package="com.xiaomo"></context:component-scan>
+
+    <!-- 加载properties文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+        <property name="user" value="${jdbc.user}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+
+    <bean id="target" class="com.xiaomo.aop.TargetImpl"></bean>
+    <bean id="advice" class="com.xiaomo.aop.Advice"></bean>
+    <!-- 配置织入切面 -->
+    <aop:config>
+        <aop:aspect ref="advice">
+            <!-- 配置切入点 -->
+            <aop:pointcut id="pointcut" expression="execution(* com.xiaomo.aop.TargetImpl.*(..))"></aop:pointcut>
+            <!-- 配置通知 -->
+            <aop:before method="before" pointcut-ref="pointcut"></aop:before>
+            <aop:after method="after" pointcut-ref="pointcut"></aop:after>
+            <aop:after-returning method="afterReturning" pointcut-ref="pointcut"></aop:after-returning>
+            <aop:after-throwing method="afterThrowing" pointcut-ref="pointcut"></aop:after-throwing>
+            <aop:around method="around" pointcut-ref="pointcut"></aop:around>
+        </aop:aspect>
+    </aop:config>
+
+    <!-- 配置事务平台管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 配置事务事务注解驱动 -->
+    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
+
+    <!-- 事务通知的配置 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" isolation="DEFAULT" propagation="REQUIRED" timeout="-1" read-only="false"/>
+        </tx:attributes>
+    </tx:advice>
+    <!-- 事务AOP织入的配置 -->
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.xiaomo.aop.TargetImpl.*(..))" />
+    </aop:config>
+
+</beans>
