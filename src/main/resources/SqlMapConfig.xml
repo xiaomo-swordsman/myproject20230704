@@ -2,13 +2,13 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
 
-    <!--<typeAliases>
-        <typeAlias type="com.example.domain.User" alias="User"/>
-        <package name="com.example.domain"/>
-    </typeAliases>-->
-
     <!-- 引入外部配置文件 -->
     <properties resource="jdbc.properties"></properties>
+
+    <typeAliases>
+        <typeAlias type="com.xiaomo.domain.User" alias="User"/>
+        <package name="com.xiaomo.domain"/>
+    </typeAliases>
 
     <!-- 配置类型转换器 -->
     <typeHandlers>
@@ -30,7 +30,7 @@
     <!-- 加载映射环境 -->
     <mappers>
         <!-- 通过单独加载xml文件方式来实现映射 -->
-        <!--<mapper resource="mapper/UserMapper.xml"></mapper>-->
+        <mapper resource="mapper/UserMapper.xml"></mapper>
 
         <!-- 通过接口和注解的方式来实现映射 -->
         <!--<mapper class="com.xiaomo.mapper.UserMapper"></mapper>-->

@@ -14,7 +14,8 @@ public class MyHandler extends BaseTypeHandler<Date> {
 
     @Override
     public void setNonNullParameter(PreparedStatement preparedStatement, int i, Date date, JdbcType jdbcType) throws SQLException {
-        preparedStatement.setDate(i,new java.sql.Date(date.getTime()));
+//        preparedStatement.setDate(i,new java.sql.Date(date.getTime()));
+        preparedStatement.setLong(i,date.getTime());
     }
 
     @Override

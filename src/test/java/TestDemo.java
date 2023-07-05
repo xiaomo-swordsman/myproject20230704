@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Date;
 import java.util.List;
 
 public class TestDemo {
@@ -102,12 +103,70 @@ public class TestDemo {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(stream);
         // 创建sqlSession对象
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        // 执行sql语句
-        List<User> list = sqlSession.getMapper(UserMapper.class).findAll();
-//        List<Object> list = sqlSession.selectList("userMapper.findAll");
+
+        // 保存用户
+//        saveUser(sqlSession);
+
+        // 更新用户
+        updateUser(sqlSession);
+
+        // 删除用户
+//        deleteUser(sqlSession);
+
+        // 查询用户
+        List<User> list = findAll(sqlSession);
+
+        sqlSession.commit();
         // 打印结果
         System.out.println("list == " + list);
         // 释放资源
         sqlSession.close();
+    }
+
+    private void saveUser(SqlSession sqlSession){
+        User user = new User();
+        user.setUsername("mybatis save user");
+        user.setPassword("123");
+        user.setName("mybatis save user");
+        user.setCreateTime(new Date());
+
+        // 通过加载xml文件的写法
+        //sqlSession.insert("userMapper.saveUser",user);
+
+        // 通过注解的写法
+        sqlSession.getMapper(UserMapper.class).saveUser(user);
+    }
+
+    private void deleteUser(SqlSession sqlSession){
+        User user = new User();
+        user.setId(22);
+
+        // 通过加载xml文件的写法
+        sqlSession.delete("userMapper.deleteUser",user.getId());
+
+        // 通过注解的写法
+//      sqlSession.getMapper(UserMapper.class).deleteUser(user.getId());
+    }
+
+    private void updateUser(SqlSession sqlSession){
+        User user = new User();
+        user.setId(13);
+        user.setPassword("12345678");
+        // 通过加载xml文件的写法
+        sqlSession.update("userMapper.updateUser",user);
+
+        // 通过注解的写法
+//        sqlSession.getMapper(UserMapper.class).updateUser(user);
+    }
+
+    private List<User> findAll(SqlSession sqlSession){
+        // 通过加载xml文件的写法
+        List<User> list = sqlSession.selectList("userMapper.findAll");
+
+
+        // 通过注解的写法
+        // List<User> list = sqlSession.getMapper(UserMapper.class).findAll();
+
+        return list;
     }
 }
