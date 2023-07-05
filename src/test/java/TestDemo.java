@@ -108,7 +108,7 @@ public class TestDemo {
 //        saveUser(sqlSession);
 
         // 更新用户
-        updateUser(sqlSession);
+//        updateUser(sqlSession);
 
         // 删除用户
 //        deleteUser(sqlSession);
