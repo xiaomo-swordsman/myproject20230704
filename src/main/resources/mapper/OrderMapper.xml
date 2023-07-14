@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaomo.mapper.OrderMapper">
+
+    <resultMap id="orderMap" type="Order">
+        <id column="id" property="id"></id>
+        <result column="orderTime" property="orderTime"></result>
+        <result column="total" property="total"></result>
+        <!--<result column="uid" property="user.id"></result>
+        <result column="username" property="user.username"></result>
+        <result column="name" property="user.name"></result>
+        <result column="createTime" property="user.createTime"></result>-->
+        <association property="user" javaType="User">
+            <id column="uid" property="id"></id>
+            <result column="username" property="username"></result>
+            <result column="name" property="name"></result>
+            <result column="createTime" property="createTime"></result>
+        </association>
+    </resultMap>
+
+    <select id="getOrderById" parameterType="int" resultMap="orderMap">
+        select * from `order` o inner join user u on o.uid = u.id where o.uid = #{id}
+    </select>
+</mapper>

@@ -1,6 +1,8 @@
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.xiaomo.aop.Target;
 import com.xiaomo.dao.UserDao;
+import com.xiaomo.domain.User;
+import com.xiaomo.mapper.UserMapper;
 import com.xiaomo.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +17,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.springframework.transaction.TransactionDefinition.ISOLATION_DEFAULT;
 
@@ -37,6 +40,9 @@ public class SpringTestDemo {
 
     @Autowired
     private ComboPooledDataSource dataSource;
+
+    @Autowired
+    private UserMapper userMapper;
 
     Connection connection = null;
     ResultSet resultSet = null;
@@ -102,6 +108,12 @@ public class SpringTestDemo {
         System.out.println("事务是否回滚 == " + transactionStatus.isRollbackOnly());
         transactionManager.commit(transactionStatus);
         transactionManager.rollback(transactionStatus);
+    }
+
+    @Test
+    public void testMyBatis(){
+        List<User> userList = userMapper.getUserById(1);
+        System.out.println("userList == " + userList);
 
     }
 }

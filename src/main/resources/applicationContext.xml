@@ -17,7 +17,10 @@
     <!--<bean id="userService" class="com.xiaomo.service.UserServiceImpl"></bean>-->
     <!--<bean id="userDao" class="com.xiaomo.dao.UserDaoImpl"></bean>-->
 
-    <context:component-scan base-package="com.xiaomo"></context:component-scan>
+    <context:component-scan base-package="com.xiaomo">
+        <!-- 扫描包 exclude-filter:排除扫描controller包-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
     <!-- 加载properties文件 -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
@@ -28,6 +31,19 @@
         <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
         <property name="user" value="${jdbc.user}"></property>
         <property name="password" value="${jdbc.password}"></property>
+    </bean>
+
+    <!-- 配置mybatis的SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="configLocation" value="classpath:Spring-SqlMapConfig.xml"></property>
+        <!-- 加载配置文件的时候添加如下配置，否则就使用MapperScannerConfigurer来扫描包即可 -->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+        <!--<property name="mapperLocations" value="mapper/UserMapper.xml,mapper/OrderMapper.xml"></property>-->
+    </bean>
+    <!-- 扫描mapper所在的包 为mapper创建实现类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.xiaomo.mapper"></property>
     </bean>
 
     <bean id="target" class="com.xiaomo.aop.TargetImpl"></bean>

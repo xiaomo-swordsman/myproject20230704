@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+    <!-- 别名配置 alias 建议和实体类一致，虽然不区分大小写也是能够被识别-->
+    <typeAliases>
+        <typeAlias type="com.xiaomo.domain.User" alias="User"/>
+        <typeAlias type="com.xiaomo.domain.Order" alias="Order"/>
+        <package name="com.xiaomo.domain"/>
+    </typeAliases>
+
+    <!-- 配置全局类型转换器，如果想要指定的数据表使用，则在mapper.xml文件中找到对应的column配置typehandler -->
+    <!--<typeHandlers>
+        <typeHandler handler="com.xiaomo.handler.MyHandler"></typeHandler>
+    </typeHandlers>-->
+</configuration>

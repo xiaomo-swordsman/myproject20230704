@@ -26,6 +26,7 @@
       <artifactId>spring-context</artifactId>
       <version>5.0.5.RELEASE</version>
     </dependency>
+    <!-- spring的表现层 -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
@@ -41,18 +42,49 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>3.0.1</version>
     </dependency>
-    <!-- spring整合test -->
+
+    <!-- springMVC的核心 -->
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
+      <artifactId>spring-webmvc</artifactId>
       <version>5.0.5.RELEASE</version>
     </dependency>
 
+    <!-- 导入fileupload 和 io坐标 -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
-      <scope>test</scope>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>1.2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+    </dependency>
+
+    <!-- mybatis相关maven坐标  -->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>3.5.11</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis-spring</artifactId>
+      <version>2.0.6</version>
+    </dependency>
+
+    <!-- 数据库相关jar包 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>5.1.4.RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.6</version>
     </dependency>
     <dependency>
       <groupId>com.mchange</groupId>
@@ -64,21 +96,20 @@
       <artifactId>druid</artifactId>
       <version>1.1.10</version>
     </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.6</version>
-    </dependency>
+
+    <!-- aop相关jar包 -->
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjweaver</artifactId>
       <version>1.9.2</version>
     </dependency>
+    <!-- spring的事务管理 -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
       <version>5.0.5.RELEASE</version>
     </dependency>
+
     <!-- 引入lomblk坐标 实体类上的@Data注解-->
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -86,19 +117,37 @@
       <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>
+
+    <!-- json数据的jar包 -->
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <version>5.1.4.RELEASE</version>
-      <scope>compile</scope>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.14.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.9.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.0</version>
     </dependency>
 
-    <!-- mybatis相关maven坐标  -->
+    <!-- spring整合test -->
     <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis</artifactId>
-      <version>3.5.11</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>5.0.5.RELEASE</version>
     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>

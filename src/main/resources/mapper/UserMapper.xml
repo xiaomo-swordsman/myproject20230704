@@ -1,19 +1,51 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-    <mapper namespace="userMapper">
-        <select id="findAll" resultType="user">
-            select * from user
+    <mapper namespace="com.xiaomo.mapper.UserMapper">
+        <select id="findAll" resultType="User">
+            select * from user order by createTime desc
         </select>
 
-        <insert id="saveUser" parameterType="user">
+        <insert id="saveUser" parameterType="User">
           insert into user (username, password, name, createTime) values (#{username}, #{password}, #{name}, #{createTime})
         </insert>
 
-        <update id="updateUser" parameterType="user">
+        <update id="updateUser" parameterType="User">
             update user set username=#{username}, password=#{password}, name=#{name}, createTime=#{createTime} where id=#{id}
         </update>
 
         <delete id="deleteUser" parameterType="int">
             delete from user where id = #{id}
         </delete>
+
+        <select id="getUserByName" resultType="User">
+            SELECT * FROM user WHERE username = '${username}'
+        </select>
+
+        <select id="getUserByNameString" resultMap="userResultMap">
+            SELECT * FROM user WHERE username = '${username}'
+        </select>
+        <resultMap id="userResultMap" type="User">
+            <result property="createTime" column="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP" typeHandler="com.xiaomo.handler.MyHandler"/>
+            <!-- 其他结果映射配置 -->
+        </resultMap>
+
+
+        <resultMap id="userMap" type="User">
+            <id column="id" property="id"></id>
+            <result column="username" property="username"></result>
+            <result column="createTime" property="createTime" typeHandler="com.xiaomo.handler.MyHandler"></result>
+            <collection property="orderList" ofType="Order">
+                <id column="id" property="id"></id>
+                <result column="orderTime" property="orderTime"></result>
+                <result column="total" property="total"></result>
+            </collection>
+        </resultMap>
+
+        <select id="getUserById" parameterType="int" resultMap="userMap">
+            select * from `order` o inner join user u on o.uid = u.id where u.id = #{id}
+        </select>
+
+        <select id="getUserByUsernameAndPassword" resultMap="userResultMap">
+            SELECT * FROM user WHERE username = #{username} AND password = #{password}
+        </select>
     </mapper>

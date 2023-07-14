@@ -1,6 +1,8 @@
 import com.xiaomo.aop.*;
 import com.xiaomo.dao.UserDao;
+import com.xiaomo.domain.Order;
 import com.xiaomo.domain.User;
+import com.xiaomo.mapper.OrderMapper;
 import com.xiaomo.mapper.UserMapper;
 import com.xiaomo.service.UserService;
 import org.apache.ibatis.io.Resources;
@@ -95,78 +97,108 @@ public class TestDemo {
         return proxy;
     }
 
-    @Test
-    public void testMyBatis() throws IOException {
+    InputStream stream = null;
+    SqlSessionFactory sqlSessionFactory = null;
+    SqlSession sqlSession = null;
+    private void initMyBatis(){
         //加载核心配置文件
-        InputStream stream = Resources.getResourceAsStream("SqlMapConfig.xml");
+        try {
+            stream = Resources.getResourceAsStream("SqlMapConfig.xml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // 创建sqlSessionFactory工厂对象
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(stream);
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(stream);
         // 创建sqlSession对象
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        sqlSession = sqlSessionFactory.openSession();
+    }
 
-        // 保存用户
-//        saveUser(sqlSession);
-
-        // 更新用户
-//        updateUser(sqlSession);
-
-        // 删除用户
-//        deleteUser(sqlSession);
-
-        // 查询用户
-        List<User> list = findAll(sqlSession);
-
+    private void destroyMyBatis(){
         sqlSession.commit();
-        // 打印结果
-        System.out.println("list == " + list);
-        // 释放资源
         sqlSession.close();
     }
 
-    private void saveUser(SqlSession sqlSession){
+    // 保存用户
+    @Test
+    public void saveUser(){
+        initMyBatis();
         User user = new User();
         user.setUsername("mybatis save user");
         user.setPassword("123");
         user.setName("mybatis save user");
         user.setCreateTime(new Date());
-
-        // 通过加载xml文件的写法
-        //sqlSession.insert("userMapper.saveUser",user);
-
-        // 通过注解的写法
         sqlSession.getMapper(UserMapper.class).saveUser(user);
+        destroyMyBatis();
     }
 
-    private void deleteUser(SqlSession sqlSession){
+    // 删除用户
+    @Test
+    public void deleteUser(){
+        initMyBatis();
         User user = new User();
         user.setId(22);
-
-        // 通过加载xml文件的写法
+        // UserMapper.xml配置文件中的namespace + id
         sqlSession.delete("userMapper.deleteUser",user.getId());
-
-        // 通过注解的写法
-//      sqlSession.getMapper(UserMapper.class).deleteUser(user.getId());
+        destroyMyBatis();
     }
 
-    private void updateUser(SqlSession sqlSession){
+    // 更新用户
+    @Test
+    public void updateUser(){
+        initMyBatis();
         User user = new User();
         user.setId(13);
         user.setPassword("12345678");
-        // 通过加载xml文件的写法
+        // UserMapper.xml配置文件中的namespace + id
         sqlSession.update("userMapper.updateUser",user);
 
-        // 通过注解的写法
-//        sqlSession.getMapper(UserMapper.class).updateUser(user);
+        // UserMapper.xml配置文件中的namespace为接口的全限定名，id为接口中的方法名
+//      sqlSession.getMapper(UserMapper.class).updateUser(user);
+        System.out.println("updateUser == " + user);
+        destroyMyBatis();
     }
 
-    private List<User> findAll(SqlSession sqlSession){
-        // 通过加载xml文件的写法
-        List<User> list = sqlSession.selectList("userMapper.findAll");
+    // 查询所有用户
+    @Test
+    public void findAll(){
+        initMyBatis();
+        // UserMapper.xml配置文件中的namespace + id
+//      List<User> list = sqlSession.selectList("userMapper.findAll");
+        // UserMapper.xml配置文件中的namespace为接口的全限定名，id为接口中的方法名
+        List<User> list = sqlSession.getMapper(UserMapper.class).findAll();
+        System.out.println("findAll == " + list);
+        destroyMyBatis();
+    }
 
+    // 根据username查找用户
+    @Test
+    public void getUserByName(){
+        initMyBatis();
+        User user = new User();
+        user.setUsername("jerry");
+        user.setName("xiaoxiao");
+        // UserMapper.xml配置文件中的namespace + id
+//        User  resultUser =  sqlSession.selectOne("userMapper.getUserByName", user);
 
-        // 通过注解的写法
-        // List<User> list = sqlSession.getMapper(UserMapper.class).findAll();
+        // UserMapper.xml配置文件中的namespace为接口的全限定名，id为接口中的方法名
+        User user2 = sqlSession.getMapper(UserMapper.class).getUserByName(user);
+        System.out.println("getUserByName == " + user2);
+        destroyMyBatis();
+    }
 
-        return list;
+    @Test
+     public void getOrderById(){
+        initMyBatis();
+        List<Order> orderList = sqlSession.getMapper(OrderMapper.class).getOrderById(1);
+        System.out.println("getOrderById == " + orderList);
+         destroyMyBatis();
+     }
+
+    @Test
+    public void getUserById(){
+        initMyBatis();
+        List<User>  user = sqlSession.getMapper(UserMapper.class).getUserById(1);
+        System.out.println("getUserById == " + user);
+        destroyMyBatis();
     }
 }
