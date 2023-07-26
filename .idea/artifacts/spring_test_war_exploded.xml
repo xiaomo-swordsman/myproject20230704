@@ -28,6 +28,8 @@
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.4" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.5.11" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:2.0.6" />
+          <element id="library" level="project" name="Maven: com.github.pagehelper:pagehelper:4.1.1" />
+          <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:0.9.4" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.1.4.RELEASE" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.6" />
           <element id="library" level="project" name="Maven: com.mchange:c3p0:0.9.5.2" />

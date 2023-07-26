@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     <mapper namespace="com.xiaomo.mapper.UserMapper">
-        <select id="findAll" resultType="User">
+        <select id="findAll" resultMap="userResultMap">
             select * from user order by createTime desc
         </select>
 
@@ -48,4 +48,24 @@
         <select id="getUserByUsernameAndPassword" resultMap="userResultMap">
             SELECT * FROM user WHERE username = #{username} AND password = #{password}
         </select>
+
+        <sql id="findAllUser">select * from user</sql>
+        <select id="getUserByPage" resultMap="userResultMap">
+            <include refid="findAllUser"></include>
+        </select>
+
+        <select id="getUserByUsernameList" parameterType="list" resultMap="userResultMap">
+            SELECT * FROM user WHERE username in
+            <foreach collection="list" item="username" open="(" separator="," close=")">
+                #{username}
+            </foreach>
+        </select>
+
+        <insert id="addUser" parameterType="list">
+            INSERT INTO user(name, username) VALUES
+            <foreach collection="list" item="user" separator=",">
+                (#{user.name}, #{user.username})
+            </foreach>
+        </insert>
+
     </mapper>

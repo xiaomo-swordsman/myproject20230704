@@ -74,6 +74,12 @@
       <version>2.0.6</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper</artifactId>
+      <version>4.1.1</version>
+    </dependency>
+
     <!-- 数据库相关jar包 -->
     <dependency>
       <groupId>org.springframework</groupId>

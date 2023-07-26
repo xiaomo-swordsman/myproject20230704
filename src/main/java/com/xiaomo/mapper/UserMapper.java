@@ -34,4 +34,9 @@ public interface UserMapper {
 
     User getUserByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 
+    List<User> getUserByPage();
+
+    List<User> getUserByUsernameList(List<String> userNameList);
+
+    void addUser(List<User> users);
 }

@@ -13,4 +13,12 @@
     <!--<typeHandlers>
         <typeHandler handler="com.xiaomo.handler.MyHandler"></typeHandler>
     </typeHandlers>-->
+
+    <!-- 配置分页助手插件 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <!-- 配置方言 -->
+            <property name="dialect" value="mysql"/>
+        </plugin>
+    </plugins>
 </configuration>

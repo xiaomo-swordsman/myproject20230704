@@ -1,7 +1,12 @@
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.xiaomo.aop.Target;
 import com.xiaomo.dao.UserDao;
+import com.xiaomo.domain.PageVo;
 import com.xiaomo.domain.User;
+import com.xiaomo.domain.Vo;
 import com.xiaomo.mapper.UserMapper;
 import com.xiaomo.service.UserService;
 import org.junit.Test;
@@ -17,6 +22,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.transaction.TransactionDefinition.ISOLATION_DEFAULT;
@@ -114,6 +120,50 @@ public class SpringTestDemo {
     public void testMyBatis(){
         List<User> userList = userMapper.getUserById(1);
         System.out.println("userList == " + userList);
+
+    }
+
+    @Test
+    public void testPageHelper(){
+        int page = 2;
+        int pageSize = 5;
+        // 设置分页相关参数
+        PageHelper.startPage(page,pageSize);
+
+        List<User> userList = userMapper.getUserByPage();
+        System.out.println("userList == " + userList);// 这里直接输出的是page的信息
+
+        List<User> userInfoList = new ArrayList<User>();// 封装实际查询的结果
+        for (User user:userList) {
+            userInfoList.add(user);
+        }
+
+        PageInfo<User> pageInfo = new PageInfo<User>(userList);  // 包含了分页的很多信息，如当前页、每页显示的数量、总记录数、总页数等
+        PageVo<User> pageVo = new PageVo<>(pageInfo, userInfoList);
+        System.out.println("pageVo == " + pageVo);
+    }
+
+    @Test
+    public void testForeach(){
+        List<String> userNameList = new ArrayList<String>();
+        userNameList.add("wanger");
+        userNameList.add("xiaohonghong");
+        userNameList.add("xiaoxiao");
+        List<User> userList = userMapper.getUserByUsernameList(userNameList);
+        System.out.println("userList == " + userList);
+
+        User user1 = new User();
+        user1.setUsername("xiaomo11");
+        user1.setName("xiaomo12");
+
+        User user2 = new User();
+        user2.setUsername("xiaomo21");
+        user2.setName("xiaomo22");
+
+        List<User> userList2 = new ArrayList<User>();
+        userList2.add(user1);
+        userList2.add(user2);
+        userMapper.addUser(userList2);
 
     }
 }
